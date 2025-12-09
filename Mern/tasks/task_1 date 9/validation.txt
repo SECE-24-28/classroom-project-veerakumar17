@@ -1,0 +1,90 @@
+import React, { useState } from "react";
+
+export default function App() {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [age, setAge] = useState("");
+
+  const [errors, setErrors] = useState({
+    name: "",
+    phone: "",
+    age: "",
+  });
+
+  const validate = () => {
+    let valid = true;
+    let newErrors = { name: "", phone: "", age: "" };
+
+    // Name validation
+    if (name.trim() === "") {
+      newErrors.name = "Name is required";
+      valid = false;
+    }
+
+    // Phone validation
+    if (phone.trim().length !== 10) {
+      newErrors.phone = "Phone must be 10 digits";
+      valid = false;
+    }
+
+    // Age validation
+    if (age.trim() === "" || isNaN(age) || Number(age) <= 0) {
+      newErrors.age = "Enter a valid age";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (validate()) {
+      alert("Form Submitted Successfully!");
+    }
+  };
+
+  return (
+    <div style={{ width: "300px", margin: "auto", marginTop: "40px" }}>
+      <h2>React Form Validation</h2>
+
+      <form onSubmit={handleSubmit}>
+        {/* Name Field */}
+        <input
+          type="text"
+          placeholder="Enter Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <br />
+        <span style={{ color: "red" }}>{errors.name}</span>
+        <br />
+
+        {/* Phone Field */}
+        <input
+          type="text"
+          placeholder="Enter Phone Number"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+        <br />
+        <span style={{ color: "red" }}>{errors.phone}</span>
+        <br />
+
+        {/* Age Field */}
+        <input
+          type="text"
+          placeholder="Enter Age"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+        />
+        <br />
+        <span style={{ color: "red" }}>{errors.age}</span>
+        <br />
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+}
